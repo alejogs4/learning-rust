@@ -1,4 +1,9 @@
-use std::cmp::Ordering;
+use std::{cmp::Ordering, ops::Div};
+
+struct Student {
+    name: String,
+    score: f32,
+}
 
 fn main() {
     println!("---------------- farenheit to celcius calc --------------------");
@@ -15,6 +20,29 @@ fn main() {
     let numbers = vec![32, 54];
     // println!("{}", get_max(numbers));
     println!("{}", get_max_cmp(numbers));
+
+    println!("------------ Get students with good score -----------------");
+    let all_students: Vec<Student> = vec![
+        Student {
+            name: String::from("Alejandro"),
+            score: 3.0,
+        },
+        Student {
+            name: String::from("Miguel"),
+            score: 4.2,
+        },
+        Student {
+            name: String::from("Laura"),
+            score: 2.3,
+        },
+    ];
+    // let approved_students = get_approved_students(all_students, 3.0);
+    // for student in approved_students {
+    //     println!("{} with {}", student.name, student.score);
+    // }
+
+    println!("------------ Better score than -----------------");
+    println!("{}", is_average_score_better_than(all_students, 7.0));
 }
 
 fn farenheit_to_celcius(temps: Vec<f32>) -> Vec<f32> {
@@ -70,4 +98,33 @@ fn get_max_cmp(nums: Vec<i32>) -> i32 {
         };
     }
     max_val
+}
+
+fn get_approved_students(students: Vec<Student>, passing_note: f32) -> Vec<Student> {
+    // Option 1 (long one)
+    // let mut approved_students: Vec<Student> = Vec::new();
+    // for student in students {
+    //     if student.score >= passing_note {
+    //         approved_students.push(student);
+    //     }
+    // }
+    // approved_students
+
+    // Option 2
+    let approved_students: Vec<Student> = students
+        .into_iter() // This iterates over values rather than references
+        .filter(|student| student.score >= passing_note)
+        .collect();
+    approved_students
+}
+
+fn is_average_score_better_than(students: Vec<Student>, target_score: f32) -> bool {
+    // Option 1
+    let mut accumulated_score: f32 = 0.0;
+    for student in &students {
+        accumulated_score = accumulated_score + student.score;
+    }
+    let average_score = accumulated_score.div(students.len() as f32);
+    let is_better = average_score >= target_score;
+    is_better
 }
