@@ -127,4 +127,15 @@ fn is_average_score_better_than(students: Vec<Student>, target_score: f32) -> bo
     let average_score = accumulated_score.div(students.len() as f32);
     let is_better = average_score >= target_score;
     is_better
+
+    // Option 2
+    // let accumulated_score = students
+    //     .iter()
+    //     .map(|student| student.score)
+    //     .reduce(|accumulated, score| accumulated + score);
+
+    // match accumulated_score {
+    //     Some(score) => (score.div(students.len() as f32)) >= target_score,
+    //     None => false,
+    // }
 }
